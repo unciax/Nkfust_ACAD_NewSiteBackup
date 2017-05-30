@@ -1,0 +1,36 @@
+<div id="topnav">
+<div class="row">
+<div class="col-md-10" style="margin-bottom: 20px;">
+<ul class="tabs" id="tabYear">
+</ul>
+</div>
+<div class="col-md-2 align-right"><!-- Download Link --><a class="btnLike" download="" href="" id="linkDownload"><i aria-hidden="true" class="fa fa-download">&nbsp;</i>下載 PDF 檔案</a></div>
+</div>
+</div>
+<p><iframe frameborder="0" id="pdf_viewer" scrolling="yes" src="" style="height: 100%; min-height: 720px; width:100%;"></iframe><script>
+var latest = 105; /* 修改此處學年度即可 */
+var oldest = 100;
+var currentYear = latest;
+var base_url = "https://docs.google.com/gview?url=http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/316/cal";
+$(function(){
+for(i=latest;i>=oldest;i--){
+  $("#tabYear").append('<li onclick="changeYear(' + i + ')" onkeypress="changeYear(' + i + ')" data-year="' + i + '">' + i + '學年度</li>');
+}
+changeYear(latest);
+})
+function changeYear(year){
+currentYear = year;
+$(".tabs li").each(function(){ 
+  $(this).removeClass("tab-active");
+});
+$('*[data-year="'+ currentYear + '"]').addClass('tab-active');
+$('#pdf_viewer').attr('src', base_url + year + '.pdf&embedded=true'); 
+$('#linkDownload').attr('href', 'http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/316/cal' + year + '.pdf');
+}
+</script>
+<style type="text/css">a.btnLike:hover {
+  background: #FF9800;
+  color: #FFF !important;
+}
+</style>
+</p>
