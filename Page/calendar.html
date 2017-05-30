@@ -2,35 +2,109 @@
 <div class="row">
 <div class="col-md-10" style="margin-bottom: 20px;">
 <ul class="tabs" id="tabYear">
+<li id="tab-current" onclick="changeSemester('current')" onkeypress="changeSemester('current')">&nbsp;</li>
+<li id="tab-another" onclick="changeSemester('another')" onkeypress="changeSemester('another')">&nbsp;</li>
+<li id="tab-old" onclick="changeSemester('old')" onkeypress="changeSemester('old')">歷史資料</li>
 </ul>
 </div>
 <div class="col-md-2 align-right"><!-- Download Link --><a class="btnLike" download="" href="" id="linkDownload"><i aria-hidden="true" class="fa fa-download">&nbsp;</i>下載 PDF 檔案</a></div>
 </div>
 </div>
-<p><iframe frameborder="0" id="pdf_viewer" scrolling="yes" src="" style="height: 100%; min-height: 720px; width:100%;"></iframe><script>
-var latest = 105; /* 修改此處學年度即可 */
-var oldest = 100;
-var currentYear = latest;
-var base_url = "https://docs.google.com/gview?url=http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/316/cal";
+<p><iframe frameborder="0" id="pdf_viewer" scrolling="yes" src="" style="height: 100%; min-height: 720px; width:100%;"></iframe></p>
+<div id="divOldDocument">&nbsp;</div>
+<script>
+//
+// =====================================================================================================
+// !!!注意!!!
+// 發布新的行事曆，檔名請依照 學年度-學期.pdf 這個規則上傳至「行事曆」，並僅需修改下方部分參數即可，請不要隨意修改其他部分，避免造成異常。
+// 目前的學年度
+var currentYear = 105;
+// 目前的學期 (1 -> 第一學期, 2 -> 第二學期)
+var currentSemester = 2;
+// 要顯示的最舊學年度
+var oldest = 94;
+// =====================================================================================================
+
+// 相關路徑設定
+var gviewUrl = "https://docs.google.com/gview?url=";
+var fileBaseUrl = "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/316/cal";
+
+// ref : http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format/4673436#4673436
+if (!String.format) {
+	String.format = function(format) {
+		var args = Array.prototype.slice.call(arguments, 1);
+		return format.replace(/{(\d+)}/g, function(match, number) {
+			return typeof args[number] != 'undefined' ? args[number] : match;
+		});
+	};
+}
+
 $(function(){
-for(i=latest;i>=oldest;i--){
-  $("#tabYear").append('<li onclick="changeYear(' + i + ')" onkeypress="changeYear(' + i + ')" data-year="' + i + '">' + i + '學年度</li>');
-}
-changeYear(latest);
+  changeTabText();
+  changeSemester('current');
+  buildHistory(currentYear);
 })
-function changeYear(year){
-currentYear = year;
-$(".tabs li").each(function(){ 
-  $(this).removeClass("tab-active");
-});
-$('*[data-year="'+ currentYear + '"]').addClass('tab-active');
-$('#pdf_viewer').attr('src', base_url + year + '.pdf&embedded=true'); 
-$('#linkDownload').attr('href', 'http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/316/cal' + year + '.pdf');
+
+// 修改 Tab 上的文字
+function changeTabText() {
+  var CH_CurrentSemester = (currentSemester === 1)? 1 : 2;
+  var CH_AnotherSemester = (currentSemester === 1)? 2 : 1;
+  $('#tab-current').html(currentYear + " 學年度-第 " + CH_CurrentSemester + " 學期");
+  $('#tab-another').html(currentYear + " 學年度-第 " + CH_AnotherSemester + " 學期");
 }
+
+// 切換學期
+function changeSemester(item){
+  $(".tabs li").each(function(){ 
+    $(this).removeClass("tab-active");
+  });
+  $('[id*="tab-'+ item + '"]').addClass('tab-active');
+  $('#divOldDocument').hide();
+  $('#pdf_viewer').show();
+  $('#linkDownload').show();
+  switch(item){
+    case "current":
+      $('#pdf_viewer').attr('src', gviewUrl + fileBaseUrl + currentYear + '-' + currentSemester + '.pdf&embedded=true'); 
+      $('#linkDownload').attr('href', fileBaseUrl + currentYear + '-' + currentSemester + '.pdf');
+      break;
+    case "another":
+      var anotherSemester = (currentSemester === 1)? 2 : 1;
+      $('#pdf_viewer').attr('src', gviewUrl + fileBaseUrl + currentYear + '-' + anotherSemester + '.pdf&embedded=true'); 
+      $('#linkDownload').attr('href', fileBaseUrl + currentYear + '-' + anotherSemester + '.pdf');
+      break;
+    case "old": 
+      $('#pdf_viewer').hide();
+      $('#divOldDocument').show();
+      $('#linkDownload').hide();
+  }
+}
+
+function buildItem(name, link){
+			
+	var str = '<a class="col-md-6 file-list" href="' + link + '" target="_blank"><div class="file-icon"><i class="fa fa-file-text-o"></i></div><p>' + name + '</p></a>';
+	return str;
+}
+function buildHistory(currentYear){
+    $('#divOldDocument').empty();
+    var div = "";
+    var year = currentYear-1;
+    while (year >= oldest){
+        var itemRow = '<div class="row">{0}{1}</div>';
+	var colLeft = buildItem(String.format("{0} 學年度第 {1} 學期", year, 1), fileBaseUrl + year + "-" + 1 + ".pdf");
+	var colRight = buildItem(String.format("{0} 學年度第 {1} 學期", year, 2), fileBaseUrl + year + "-" + 2 + ".pdf");	
+	itemRow = String.format(itemRow, colLeft, colRight);
+	$('#divOldDocument').append(itemRow);
+	year--;
+    }
+}
+
 </script>
 <style type="text/css">a.btnLike:hover {
   background: #FF9800;
   color: #FFF !important;
 }
+.col-md-6 {
+  padding: 5px;
+}
 </style>
-</p>
+<p>&nbsp;</p>
