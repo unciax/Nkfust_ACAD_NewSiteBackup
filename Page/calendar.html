@@ -17,12 +17,18 @@
 // =====================================================================================================
 // !!!注意!!!
 // 發布新的行事曆，檔名請依照 學年度-學期.pdf 這個規則上傳至「行事曆」，並僅需修改下方部分參數即可，請不要隨意修改其他部分，避免造成異常。
+// 欲提早顯示下一學年(含上下學期)的行事曆，修改 isEarlyShow 為 true ， earlyShowYear 改為要顯示的學年度即可。
+// 欲關閉提早顯示部分，請將 isEarlyShow 改為 false 即可
 // 目前的學年度
 var currentYear = 105;
 // 目前的學期 (1 -> 第一學期, 2 -> 第二學期)
 var currentSemester = 2;
 // 要顯示的最舊學年度
 var oldest = 94;
+// 是否提早顯示下一學年的行事曆
+var isEarlyShow = true;
+// 提早顯示的學年度
+var earlyShowYear = 106;
 // =====================================================================================================
 
 // 相關路徑設定
@@ -41,6 +47,7 @@ if (!String.format) {
 
 $(function(){
   changeTabText();
+  buildEarlyShowPage();
   changeSemester('current');
   buildHistory(currentYear);
 })
@@ -72,6 +79,14 @@ function changeSemester(item){
       $('#pdf_viewer').attr('src', gviewUrl + fileBaseUrl + currentYear + '-' + anotherSemester + '.pdf&embedded=true'); 
       $('#linkDownload').attr('href', fileBaseUrl + currentYear + '-' + anotherSemester + '.pdf');
       break;
+    case "early-show-1":
+      $('#pdf_viewer').attr('src', gviewUrl + fileBaseUrl + earlyShowYear + '-1.pdf&embedded=true'); 
+      $('#linkDownload').attr('href', fileBaseUrl + earlyShowYear + '-1.pdf');
+      break;
+    case "early-show-2":
+      $('#pdf_viewer').attr('src', gviewUrl + fileBaseUrl + earlyShowYear + '-2.pdf&embedded=true'); 
+      $('#linkDownload').attr('href', fileBaseUrl + earlyShowYear + '-2.pdf');
+      break;
     case "old": 
       $('#pdf_viewer').hide();
       $('#divOldDocument').show();
@@ -90,12 +105,20 @@ function buildHistory(currentYear){
     var year = currentYear-1;
     while (year >= oldest){
         var itemRow = '<div class="row">{0}{1}</div>';
-	var colLeft = buildItem(String.format("{0} 學年度第 {1} 學期", year, 1), fileBaseUrl + year + "-" + 1 + ".pdf");
-	var colRight = buildItem(String.format("{0} 學年度第 {1} 學期", year, 2), fileBaseUrl + year + "-" + 2 + ".pdf");	
-	itemRow = String.format(itemRow, colLeft, colRight);
-	$('#divOldDocument').append(itemRow);
-	year--;
+        var colLeft = buildItem(String.format("{0} 學年度第 {1} 學期", year, 1), fileBaseUrl + year + "-" + 1 + ".pdf");
+        var colRight = buildItem(String.format("{0} 學年度第 {1} 學期", year, 2), fileBaseUrl + year + "-" + 2 + ".pdf");	
+        itemRow = String.format(itemRow, colLeft, colRight);
+        $('#divOldDocument').append(itemRow);
+        year--;
     }
+}
+
+function buildEarlyShowPage() {
+  if (isEarlyShow) {
+    var earlyShowTab = '<li id="tab-{0}" onclick="changeSemester(\'{0}\')" onkeypress="changeSemester(\'{0}\')">{1} 學年度-第 {2} 學期</li>';
+    $('#tabYear').append(String.format(earlyShowTab, 'early-show-1', earlyShowYear, 1));
+    $('#tabYear').append(String.format(earlyShowTab, 'early-show-2', earlyShowYear, 2));
+  }
 }
 
 </script>
