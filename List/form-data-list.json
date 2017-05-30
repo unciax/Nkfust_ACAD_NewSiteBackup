@@ -286,6 +286,10 @@
 			"itemName": "擋修課程對照表",
 			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/aa1-54.doc",
 			"itemDescription": ""
+		}, {
+			"itemName": "開設跨領域共授課程計劃書",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/aa1-95.docx",
+			"itemDescription": ""
 		}]
 	}, {
 		"catelogName": "授課鐘點",
@@ -560,6 +564,38 @@
 		}, {
 			"itemName": "學生問卷",
 			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/1027-5.doc",
+			"itemDescription": ""
+		}]
+	}, {
+		"catelogName": "教師全英語授課海外培訓",
+		"catelogColorClass": "blue",
+		"items": [{
+			"itemName": "「全英語授課海外培訓」申請書",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/445601981.docx",
+			"itemDescription": ""
+		}, {
+			"itemName": "教師全英語授課海外培訓成果報告書",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/113862678.docx",
+			"itemDescription": ""
+		}, {
+			"itemName": "教師全英語授課海外培訓切結書",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/967865957.docx",
+			"itemDescription": ""
+		}]
+	}, {
+		"catelogName": "問題導向課程(PBL)",
+		"catelogColorClass": "green",
+		"items": [{
+			"itemName": "補助經費申請表",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/198341226.docx",
+			"itemDescription": ""
+		}, {
+			"itemName": "成果報告",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/791646783.docx",
+			"itemDescription": ""
+		}, {
+			"itemName": "問卷",
+			"itemLink": "http://www.acad.nkfust.edu.tw/ezfiles/1/1001/img/304/199482487.docx",
 			"itemDescription": ""
 		}]
 	}, {
